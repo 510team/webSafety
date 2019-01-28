@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <el-form label-width="40px">
+        <el-form label-width="40px" :rules="formRules">
             <el-form-item label="账号">
                 <el-input v-model="user.name" placeholder="请输入账号"></el-input>
             </el-form-item>
@@ -14,10 +14,18 @@
 <script>
     export default{
         data(){
-            return{
+            return {
                 user:{
                     name:'',
                     mobile:''
+                },
+                formRules: {
+                    name: [
+                        { required: true, message: '请输入账号', trigger: 'blur' }
+                    ],
+                    password:[
+                        { required: true, message: '请输入账号', trigger: 'blur' }
+                    ]
                 }
             }
         },
