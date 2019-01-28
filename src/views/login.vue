@@ -12,27 +12,27 @@
     </div>
 </template>
 <script>
-    export default{
-        data(){
-            return {
-                user:{
-                    name:'',
-                    mobile:''
-                },
-                formRules: {
-                    name: [
-                        { required: true, message: '请输入账号', trigger: 'blur' }
-                    ],
-                    password:[
-                        { required: true, message: '请输入账号', trigger: 'blur' }
-                    ]
-                }
+export default {
+    data() {
+        return {
+            user: {
+                name: "",
+                mobile: ""
+            },
+            formRules: {
+                name: [
+                    { required: true, message: "请输入账号", trigger: "blur" }
+                ],
+                password: [
+                    { required: true, message: "请输入账号", trigger: "blur" }
+                ]
             }
-        },
-        methods:{
-            onLogin(){}
-        }
+        };
+    },
+    methods: {
+        onLogin() {}
     }
+};
 </script>
 <style lang="less">
 .login-container {
