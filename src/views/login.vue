@@ -12,7 +12,6 @@
     </div>
 </template>
 <script>
-import axios from "axios";
 import service from '@/service';
     export default{
         data(){
