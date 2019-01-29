@@ -15,6 +15,15 @@ export default new Router({
             path: "/login",
             name: "登录",
             component: () => import("@/views/login.vue")
+        },
+        {
+            path: "/posted",
+            name: "发帖",
+            component: () => import("@/views/posted.vue")
+        },
+        {
+            path: "/list",
+            component: () => import("@/views/list.vue")
         }
     ]
 });
