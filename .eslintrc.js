@@ -1,19 +1,19 @@
 module.exports = {
-    parser: 'babel-eslint',
+    parser: "babel-eslint",
     parserOptions: {
-        sourceType: 'module',
+        sourceType: "module",
         ecmaFeatures: {
             jsx: true
         }
     },
-    extends: ['eslint:recommended'],
-    plugins: ['html', 'vue', 'prettier', 'import'],
+    extends: ["eslint:recommended"],
+    plugins: ["html", "vue", "prettier", "import"],
     rules: {
-        'no-console': 'off',
-        'prefer-const': 'error',
-        'prettier/prettier': 'warn',
-        'prefer-arrow-callback': 'warn',
-        'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+        "no-console": "off",
+        "prefer-const": "error",
+        "prettier/prettier": "warn",
+        "prefer-arrow-callback": "warn",
+        "no-debugger": process.env.NODE_ENV === "production" ? 2 : 0
     },
     globals: {
         location: true,
@@ -22,6 +22,7 @@ module.exports = {
         clearInterval: true,
         clearTimeout: true,
         sessionStorage: true,
+        localStorage: true,
         Promise: true,
         document: true,
         window: true,

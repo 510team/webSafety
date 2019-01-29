@@ -1,8 +1,8 @@
 <template>
     <div class="login-container">
         <el-form :model="loginForm" label-width="60px" :rules="formRules" ref="loginForm">
-            <el-form-item label="账号" prop="name">
-                <el-input v-model="loginForm.name" placeholder="请输入账号"></el-input>
+            <el-form-item label="账号" prop="user">
+                <el-input v-model="loginForm.user" placeholder="请输入账号"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
                 <el-input v-model="loginForm.password" placeholder="请输入密码"></el-input>
@@ -12,15 +12,17 @@
     </div>
 </template>
 <script>
+import axios from "axios";
+import service from '@/service';
     export default{
         data(){
             return {
                 loginForm:{
-                    name:'',
+                    user:'',
                     password:''
                 },
                 formRules: {
-                    name: [
+                    user: [
                         { required: true, message: '请输入账号', trigger: 'blur' }
                     ],
                     password:[
@@ -33,7 +35,11 @@
             onLogin(){
                 this.$refs.loginForm.validate((valid) => {
                     if(valid){
-                        
+                        service.login({user:this.loginForm.user,password:this.loginForm.password}).then(res=>{
+                            if(res.status === 'success'){
+                                this.$router.push('/list')
+                            }
+                        })
                     }
                 })
             }
