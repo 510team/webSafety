@@ -1,38 +1,44 @@
 <template>
     <div class="login-container">
-        <el-form label-width="40px" :rules="formRules">
-            <el-form-item label="账号">
-                <el-input v-model="user.name" placeholder="请输入账号"></el-input>
+        <el-form :model="loginForm" label-width="60px" :rules="formRules" ref="loginForm">
+            <el-form-item label="账号" prop="name">
+                <el-input v-model="loginForm.name" placeholder="请输入账号"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
-                <el-input v-model="user.password" placeholder="请输入密码"></el-input>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="loginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-button type="primary" @click="onLogin">登录</el-button>
         </el-form>
     </div>
 </template>
 <script>
-export default {
-    data() {
-        return {
-            user: {
-                name: "",
-                mobile: ""
-            },
-            formRules: {
-                name: [
-                    { required: true, message: "请输入账号", trigger: "blur" }
-                ],
-                password: [
-                    { required: true, message: "请输入账号", trigger: "blur" }
-                ]
+    export default{
+        data(){
+            return {
+                loginForm:{
+                    name:'',
+                    password:''
+                },
+                formRules: {
+                    name: [
+                        { required: true, message: '请输入账号', trigger: 'blur' }
+                    ],
+                    password:[
+                        { required: true, message: '请输入密码', trigger: 'blur' }
+                    ]
+                }
             }
-        };
-    },
-    methods: {
-        onLogin() {}
+        },
+        methods:{
+            onLogin(){
+                this.$refs.loginForm.validate((valid) => {
+                    if(valid){
+                        
+                    }
+                })
+            }
+        }
     }
-};
 </script>
 <style lang="less">
 .login-container {
