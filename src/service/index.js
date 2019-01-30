@@ -11,5 +11,15 @@ export default {
         return Vue.axios.get("/list").then(res => {
             return res.data;
         });
+    },
+    posted(data) {
+        return Vue.axios.post("/list/posted", data).then(res => {
+            return res.data;
+        });
+    },
+    delete(data) {
+        return Vue.axios.post("/list/deleted", data).then(res => {
+            return res.data;
+        });
     }
 };

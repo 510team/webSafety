@@ -4,15 +4,15 @@
         <el-table :data="tableData" border>
             <el-table-column v-for="header in tableHeader" :key="header.prop" :prop="header.prop" :label="header.label" align="center">
                 <template slot-scope="scope">
-                    <!-- <span v-if="header.prop==='created_time'">{{scope.row.created_time | formatTime}}</span> -->
-                    <span>{{scope.row[header.prop]}}</span>
+                    <span v-if="header.prop==='create_time'">{{scope.row.create_time | formatTime}}</span>
+                    <span v-else>{{scope.row[header.prop]}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- <el-button type="text" @click="onJump('view')">查看</el-button> -->
                     <!-- <el-button type="text" @click="onJump('edit')">编辑</el-button> -->
-                    <el-button type="text" @click="onDelete">删除</el-button>
+                    <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -20,7 +20,7 @@
 </template>
 <script>
 import date from "../util/date.js";
-import service from '@/service';
+import service from "@/service";
 
 export default {
     data() {
@@ -52,26 +52,43 @@ export default {
             ]
         };
     },
-    created(){
-        service.getList().then(res=>{
-            if(res.status === 'success'){
-                this.tableData = res.list;
-            }
-        })
+    created() {
+        this.fetch();
     },
     methods: {
-        onJump(type) {
-            this.jump(type);
+        fetch() {
+            service
+                .getList()
+                .then(res => {
+                    if (res.status === "success") {
+                        this.tableData = res.list;
+                    }
+                })
+                .catch(err => {
+                    this.$message.error(err && err.message);
+                });
         },
-        jump(type) {
+        onJump() {
+            this.jump();
+        },
+        jump() {
             this.$router.push({
-                path: "/posted",
-                query: {
-                    type: type
-                }
+                path: "/posted"
             });
         },
-        onDelete(){}
+        onDelete(row) {
+            service
+                .delete({ list_id: row.id })
+                .then(res => {
+                    if (res.status === "success") {
+                        this.$message.success("删除成功");
+                        this.fetch();
+                    }
+                })
+                .catch(err => {
+                    this.$message.error(err && err.message);
+                });
+        }
     },
     filters: {
         formatTime(value, customFormat = "yyyy-MM-dd hh:mm:ss", isMsec = true) {
