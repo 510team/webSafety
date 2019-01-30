@@ -12,33 +12,47 @@
     </div>
 </template>
 <script>
-    export default{
-        data(){
-            return {
-                loginForm:{
-                    name:'',
-                    password:''
-                },
-                formRules: {
-                    name: [
-                        { required: true, message: '请输入账号', trigger: 'blur' }
-                    ],
-                    password:[
-                        { required: true, message: '请输入密码', trigger: 'blur' }
-                    ]
+import { login } from "../service/index.js";
+export default {
+    data() {
+        return {
+            loginForm: {
+                name: "",
+                password: ""
+            },
+            formRules: {
+                name: [
+                    { required: true, message: "请输入账号", trigger: "blur" }
+                ],
+                password: [
+                    { required: true, message: "请输入密码", trigger: "blur" }
+                ]
+            }
+        };
+    },
+    methods: {
+        onLogin() {
+            this.$refs.loginForm.validate(valid => {
+                if (valid) {
+                    const params = {
+                        user: this.loginForm.name,
+                        password: this.loginForm.password
+                    };
+                    login(params)
+                        .then(data => {
+                            // console.log("da", data);
+                            this.$router.push({
+                                path: "/list"
+                            });
+                        })
+                        .catch(err => {
+                            this.$message.error(err && err.message);
+                        });
                 }
-            }
-        },
-        methods:{
-            onLogin(){
-                this.$refs.loginForm.validate((valid) => {
-                    if(valid){
-                        
-                    }
-                })
-            }
+            });
         }
     }
+};
 </script>
 <style lang="less">
 .login-container {
