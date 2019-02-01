@@ -1,24 +1,24 @@
 const serviceHost = "http://localhost:8362";
 
 const login = {
-  url: `/api/login/index`,
+  url: `/login/index`,
   method: "post"
 };
 const list = {
-  url: `/api/list/index`,
+  url: `/list/index`,
   method: "get"
 };
 const add = {
-  url: `/api/list/posted`,
+  url: `/list/posted`,
   method: "post"
 };
 const view = {
-  url: `/api/list/view`,
+  url: `/list/view`,
   method: "get"
 };
 
 const deleted = {
-  url: `/api/list/deleted`,
+  url: `/list/deleted`,
   method: "post"
 };
 

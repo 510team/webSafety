@@ -82,7 +82,7 @@ export default {
                 path: "/posted",
                 query: {
                     type: type,
-                    id: row.id
+                    id: row && row.id
                 }
             });
         }
