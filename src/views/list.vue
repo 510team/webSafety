@@ -1,5 +1,6 @@
 <template>
     <div class="posted-list">
+        <el-button class="pull-right" type="primary" @click="onJump('add')">新增</el-button>
         <el-table :data="tableData" border>
             <el-table-column v-for="header in tableHeader" :key="header.prop" :prop="header.prop" :label="header.label" align="center">
                 <template slot-scope="scope">
@@ -9,14 +10,16 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="onJump('view')">查看</el-button>
-                    <el-button type="text" @click="onJump('edit')">编辑</el-button>
+                    <el-button type="text" @click="onJump('view',scope.row)">查看</el-button>
+                    <el-button type="text" @click="onJump('edit',scope.row)">编辑</el-button>
+                    <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
     </div>
 </template>
 <script>
+import { list, deleteArticle } from "../service/index.js";
 import date from "../util/date.js";
 export default {
     data() {
@@ -24,35 +27,62 @@ export default {
             tableHeader: [
                 {
                     label: "发帖人",
-                    prop: "user_name"
+                    prop: "name"
                 },
                 {
                     label: "标题",
-                    prop: "posted_title"
+                    prop: "title"
                 },
                 {
                     label: "发布时间",
-                    prop: "created_time"
+                    prop: "create_time"
                 }
             ],
-            tableData: [
-                {
-                    user_name: "章三",
-                    posted_title: "第一篇帖子",
-                    created_time: 1550851199000
-                }
-            ]
+            tableData: []
         };
     },
+    created() {
+        this.fetch();
+    },
     methods: {
-        onJump(type) {
-            this.jump(type);
+        fetch() {
+            return list()
+                .then(data => {
+                    this.tableData = data.list;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         },
-        jump(type) {
+        onDelete(row) {
+            deleteArticle({ id: row.id })
+                .then(data => {
+                    this.fetch()
+                        .then(() => {
+                            this.$message({
+                                type: "success",
+                                message: "删除成功"
+                            });
+                        })
+                        .catch(() => {
+                            this.$message({
+                                type: "error",
+                                message: "删除"
+                            });
+                        });
+                })
+                .catch(err => {});
+        },
+
+        onJump(type, row) {
+            this.jump(type, row);
+        },
+        jump(type, row) {
             this.$router.push({
                 path: "/posted",
                 query: {
-                    type: type
+                    type: type,
+                    id: row.id
                 }
             });
         }
@@ -73,6 +103,9 @@ export default {
     th {
         background: #909399;
     }
+}
+.pull-right {
+    float: right;
 }
 </style>
 

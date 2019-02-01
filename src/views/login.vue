@@ -40,10 +40,11 @@ export default {
                     };
                     login(params)
                         .then(data => {
-                            // console.log("da", data);
-                            this.$router.push({
-                                path: "/list"
-                            });
+                            if ((data.status = "success")) {
+                                this.$router.push({
+                                    path: "/list"
+                                });
+                            }
                         })
                         .catch(err => {
                             this.$message.error(err && err.message);
