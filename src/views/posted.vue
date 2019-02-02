@@ -55,8 +55,16 @@ export default {
                                 type: "success",
                                 message: "发布成功"
                             });
+                            this.$route.push({
+                                path: "/list"
+                            });
                         })
-                        .catch(err => {});
+                        .catch(err => {
+                            this.$message({
+                                type: "error",
+                                message: err.message || err
+                            });
+                        });
                 }
             });
         }

@@ -27,7 +27,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: resolve(`../web-safety-server/www`),
-    filename: "static/websafety/js/[name].j
+    filename: "static/websafety/js/[name].js"
     // chunkFilename: utils.assetsPath("js/[id].[chunkhash].js")
   },
   plugins: [

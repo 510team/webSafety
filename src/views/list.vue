@@ -12,7 +12,7 @@
                 <template slot-scope="scope">
                     <el-button type="text" @click="onJump('view',scope.row)">查看</el-button>
                     <el-button type="text" @click="onJump('edit',scope.row)">编辑</el-button>
-                    <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
+                    <el-button type="text" v-if="canDelete" @click="onDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -38,7 +38,8 @@ export default {
                     prop: "create_time"
                 }
             ],
-            tableData: []
+            tableData: [],
+            canDelete: false
         };
     },
     created() {
@@ -49,29 +50,30 @@ export default {
             return list()
                 .then(data => {
                     this.tableData = data.list;
+                    this.canDelete = data.delete;
                 })
                 .catch(err => {
-                    console.log(err);
+                    this.$message({
+                        type: "error",
+                        message: err.message || err
+                    });
                 });
         },
         onDelete(row) {
             deleteArticle({ id: row.id })
                 .then(data => {
-                    this.fetch()
-                        .then(() => {
-                            this.$message({
-                                type: "success",
-                                message: "删除成功"
-                            });
-                        })
-                        .catch(() => {
-                            this.$message({
-                                type: "error",
-                                message: "删除"
-                            });
-                        });
+                    this.$message({
+                        type: "success",
+                        message: "删除成功"
+                    });
                 })
-                .catch(err => {});
+                .catch(err => {
+                    console.log("err", err);
+                    this.$message({
+                        type: "error",
+                        message: err.message || err
+                    });
+                });
         },
 
         onJump(type, row) {

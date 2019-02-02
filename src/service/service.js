@@ -41,6 +41,7 @@ const service = option => {
     .then(
       res => {
         const response = res.data;
+
         if (response.status != "success") {
           //session 过期刷新页面
           if (response.result_code === "auth_failed") {
@@ -48,8 +49,10 @@ const service = option => {
             return Promise.resolve({});
           }
           // Message.error(response);
+          console.log("response reject", response);
           return Promise.reject(response);
         } else {
+          console.log("response", response);
           return response;
         }
       },
