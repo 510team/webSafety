@@ -11,8 +11,8 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="onJump('view',scope.row)">查看</el-button>
-                    <el-button type="text" @click="onJump('edit',scope.row)">编辑</el-button>
-                    <el-button type="text" v-if="canDelete" @click="onDelete(scope.row)">删除</el-button>
+                    <el-button type="text" v-if="scope.row.delete" @click="onJump('edit',scope.row)">编辑</el-button>
+                    <el-button type="text" v-if="scope.row.delete" @click="onDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -38,8 +38,7 @@ export default {
                     prop: "create_time"
                 }
             ],
-            tableData: [],
-            canDelete: false
+            tableData: []
         };
     },
     created() {
@@ -50,7 +49,6 @@ export default {
             return list()
                 .then(data => {
                     this.tableData = data.list;
-                    this.canDelete = data.delete;
                 })
                 .catch(err => {
                     this.$message({
@@ -66,6 +64,7 @@ export default {
                         type: "success",
                         message: "删除成功"
                     });
+                    this.fetch();
                 })
                 .catch(err => {
                     console.log("err", err);

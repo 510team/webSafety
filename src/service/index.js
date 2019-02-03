@@ -39,6 +39,19 @@ const addArticle = params => {
       return Promise.reject(err);
     });
 };
+const editArticle = params => {
+  const sendData = {
+    ...serviceUrl.edit,
+    data: params
+  };
+  return service(sendData)
+    .then(data => {
+      return Promise.resolve(data);
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
+};
 const deleteArticle = params => {
   const sendData = {
     ...serviceUrl.deleted,
@@ -65,4 +78,4 @@ const view = params => {
       return Promise.reject(err);
     });
 };
-export { login, list, addArticle, deleteArticle, view };
+export { login, list, addArticle, editArticle, deleteArticle, view };

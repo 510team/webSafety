@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import { addArticle, view } from "../service/index.js";
+import { addArticle, editArticle, view } from "../service/index.js";
 export default {
     data() {
         return {
@@ -44,6 +44,10 @@ export default {
     },
     methods: {
         onEnsure() {
+            if (this.type === "edit") {
+                this.edit();
+                return;
+            }
             this.add();
         },
         add() {
@@ -55,7 +59,29 @@ export default {
                                 type: "success",
                                 message: "发布成功"
                             });
-                            this.$route.push({
+                            this.$router.push({
+                                path: "/list"
+                            });
+                        })
+                        .catch(err => {
+                            this.$message({
+                                type: "error",
+                                message: err.message || err
+                            });
+                        });
+                }
+            });
+        },
+        edit() {
+            this.$refs["postForm"].validate(valid => {
+                if (valid) {
+                    editArticle({ ...this.postForm, id: this.$route.query.id })
+                        .then(data => {
+                            this.$message({
+                                type: "success",
+                                message: "编辑成功"
+                            });
+                            this.$router.push({
                                 path: "/list"
                             });
                         })
