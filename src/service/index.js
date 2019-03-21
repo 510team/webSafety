@@ -1,4 +1,5 @@
 import Vue from "vue";
+import service from "./base";
 
 // 登录接口
 export default {
@@ -13,12 +14,18 @@ export default {
         });
     },
     posted(data) {
-        return Vue.axios.post("/list/posted", data).then(res => {
+        return service({
+            url: "/list/posted",
+            data: data
+        }).then(res => {
             return res.data;
         });
     },
     delete(data) {
-        return Vue.axios.post("/list/deleted", data).then(res => {
+        return service({
+            url: "/list/deleted",
+            data: data
+        }).then(res => {
             return res.data;
         });
     }
