@@ -1,6 +1,6 @@
 <template>
     <div class="posted-list">
-        <el-button type="primary" @click="onJump" class="btn">发布新文章</el-button>
+        <el-button class="pull-right" type="primary" @click="onJump('add')">新增</el-button>
         <el-table :data="tableData" border>
             <el-table-column v-for="header in tableHeader" :key="header.prop" :prop="header.prop" :label="header.label" align="center">
                 <template slot-scope="scope">
@@ -10,15 +10,16 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <!-- <el-button type="text" @click="onJump('view')">查看</el-button> -->
-                    <!-- <el-button type="text" @click="onJump('edit')">编辑</el-button> -->
-                    <el-button type="text" @click="onDelete(scope.row)">删除</el-button>
+                    <el-button type="text" @click="onJump('view',scope.row)">查看</el-button>
+                    <el-button type="text" v-if="scope.row.delete" @click="onJump('edit',scope.row)">编辑</el-button>
+                    <el-button type="text" v-if="scope.row.delete" @click="onDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
     </div>
 </template>
 <script>
+import { list, deleteArticle } from "../service/index.js";
 import date from "../util/date.js";
 import service from "@/service";
 
@@ -35,21 +36,11 @@ export default {
                     prop: "title"
                 },
                 {
-                    label: "内容",
-                    prop: "content"
-                },
-                {
                     label: "发布时间",
                     prop: "create_time"
                 }
             ],
-            tableData: [
-                {
-                    user_name: "章三",
-                    posted_title: "第一篇帖子",
-                    created_time: 1550851199000
-                }
-            ]
+            tableData: []
         };
     },
     created() {
@@ -57,23 +48,45 @@ export default {
     },
     methods: {
         fetch() {
-            service
-                .getList()
-                .then(res => {
-                    if (res.status === "success") {
-                        this.tableData = res.list;
-                    }
+            return list()
+                .then(data => {
+                    this.tableData = data.list;
                 })
                 .catch(err => {
-                    this.$message.error(err && err.message);
+                    this.$message({
+                        type: "error",
+                        message: err.message || err
+                    });
                 });
         },
-        onJump() {
-            this.jump();
+        onDelete(row) {
+            deleteArticle({ id: row.id })
+                .then(data => {
+                    this.$message({
+                        type: "success",
+                        message: "删除成功"
+                    });
+                    this.fetch();
+                })
+                .catch(err => {
+                    console.log("err", err);
+                    this.$message({
+                        type: "error",
+                        message: err.message || err
+                    });
+                });
         },
-        jump() {
+
+        onJump(type, row) {
+            this.jump(type, row);
+        },
+        jump(type, row) {
             this.$router.push({
-                path: "/posted"
+                path: "/posted",
+                query: {
+                    type: type,
+                    id: row && row.id
+                }
             });
         },
         onDelete(row) {
@@ -107,9 +120,8 @@ export default {
         background: #909399;
     }
 }
-.btn {
+.pull-right {
     float: right;
-    margin-bottom: 20px;
 }
 </style>
 

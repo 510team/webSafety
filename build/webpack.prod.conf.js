@@ -13,6 +13,9 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const env = require("../config/prod.env");
 
+function resolve(dir) {
+    return path.join(__dirname, "..", dir);
+}
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
@@ -23,9 +26,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     },
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     output: {
-        path: config.build.assetsRoot,
-        filename: utils.assetsPath("js/[name].[chunkhash].js"),
-        chunkFilename: utils.assetsPath("js/[id].[chunkhash].js")
+        path: resolve(`../web-safety-server/www`),
+        filename: "static/websafety/js/[name].js"
+        // chunkFilename: utils.assetsPath("js/[id].[chunkhash].js")
     },
     plugins: [
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -61,7 +64,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         // you can customize output by editing /index.html
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
-            filename: config.build.index,
+            // filename: config.build.index,
+            filename: "../view/index_index.html",
             template: "index.html",
             inject: true,
             minify: {

@@ -7,15 +7,15 @@
             <el-form-item label="内容" prop="content">
                 <el-input type="textarea" v-model.trim="postForm.content" :autosize="{ minRows: 10, maxRows: 10}" placeholder="开始你的创作吧"></el-input>
             </el-form-item>
-            <el-form-item>
-                <el-button @click="onDel">取消</el-button>
+            <el-form-item v-if="type !== 'view'">
+                <el-button>取消</el-button>
                 <el-button type="primary" @click="onEnsure">发布</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 <script>
-import service from "@/service";
+import { addArticle, editArticle, view } from "../service/index.js";
 export default {
     data() {
         return {
@@ -44,6 +44,10 @@ export default {
     created() {},
     methods: {
         onEnsure() {
+            if (this.type === "edit") {
+                this.edit();
+                return;
+            }
             this.add();
         },
         onDel() {
@@ -52,23 +56,57 @@ export default {
         add() {
             this.$refs["postForm"].validate(valid => {
                 if (valid) {
-                    const params = {
-                        title: this.postForm.title,
-                        content: this.postForm.content
-                    };
-                    service
-                        .posted(params)
-                        .then(res => {
-                            if (res.status === "success") {
-                                this.$message.success("发布成功了");
-                                this.$router.push("/list");
-                            }
+                    addArticle(this.postForm)
+                        .then(data => {
+                            this.$message({
+                                type: "success",
+                                message: "发布成功"
+                            });
+                            this.$router.push({
+                                path: "/list"
+                            });
                         })
                         .catch(err => {
-                            this.$message.error(err && err.message);
+                            this.$message({
+                                type: "error",
+                                message: err.message || err
+                            });
                         });
                 }
             });
+        },
+        edit() {
+            this.$refs["postForm"].validate(valid => {
+                if (valid) {
+                    editArticle({ ...this.postForm, id: this.$route.query.id })
+                        .then(data => {
+                            this.$message({
+                                type: "success",
+                                message: "编辑成功"
+                            });
+                            this.$router.push({
+                                path: "/list"
+                            });
+                        })
+                        .catch(err => {
+                            this.$message({
+                                type: "error",
+                                message: err.message || err
+                            });
+                        });
+                }
+            });
+        }
+    },
+    created() {
+        if (this.type === "view" || this.type === "edit") {
+            view({ id: this.$route.query.id })
+                .then(data => {
+                    const res = data.data;
+                    this.postForm.content = res.content;
+                    this.postForm.title = res.title;
+                })
+                .catch();
         }
     }
 };
