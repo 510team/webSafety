@@ -9,7 +9,13 @@ export default {
         });
     },
     getList() {
-        return Vue.axios.get("/list").then(res => {
+        // return Vue.axios.get("/list").then(res => {
+        //     return res.data;
+        // });
+        return service({
+            url: "/list",
+            methods: 'get',
+        }).then(res => {
             return res.data;
         });
     },

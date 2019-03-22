@@ -37,6 +37,7 @@ import service from '@/service';
                         service.login({user:this.loginForm.user,password:this.loginForm.password}).then(res=>{
                             if(res.status === 'success'){
                                 this.$router.push('/list')
+                                window.localStorage.setItem('token',res.token)
                             }
                         })
                     }
@@ -47,18 +48,18 @@ import service from '@/service';
 </script>
 <style lang="less">
 .login-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    padding: 40px 40px;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 40px 40px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  button {
+    width: 160px;
     margin: 0 auto;
-    button {
-        width: 160px;
-        margin: 0 auto;
-    }
+  }
 }
 </style>

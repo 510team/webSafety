@@ -9,9 +9,9 @@ axios.defaults.timeout = 5000;
 axios.interceptors.request.use(
     config => {
         // token
-        if (localStorage.getItem("token")) {
-            config.headers.Authorization = localStorage.getItem("token");
-        }
+        // if (localStorage.getItem("token")) {
+        //     config.headers.Authorization = localStorage.getItem("token");
+        // }
         // 防止缓存
         if (
             config.method === "post" &&
@@ -45,9 +45,11 @@ axios.interceptors.response.use(
                 Message.error(data.data.message || "接口错误");
             }
         }
+        console.log(data)
         return data;
     },
     error => {
+        console.log('@@@@@error:', error)
         let errmsg = "服务器响应错误";
         if (error.response) {
             switch (error.response.status) {
