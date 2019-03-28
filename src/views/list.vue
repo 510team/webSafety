@@ -4,7 +4,7 @@
         <el-table :data="tableData" border>
             <el-table-column v-for="header in tableHeader" :key="header.prop" :prop="header.prop" :label="header.label" align="center">
                 <template slot-scope="scope">
-                    <span v-if="header.prop==='create_time'">{{scope.row.create_time | formatTime}}</span>
+                    <span v-if="header.prop==='created_time'">{{scope.row.created_time | formatTime}}</span>
                     <span v-else>{{scope.row[header.prop]}}</span>
                 </template>
             </el-table-column>
@@ -21,8 +21,6 @@
 <script>
 import { list, deleteArticle } from "../service/index.js";
 import date from "../util/date.js";
-import service from "@/service";
-
 export default {
     data() {
         return {
@@ -76,7 +74,6 @@ export default {
                     });
                 });
         },
-
         onJump(type, row) {
             this.jump(type, row);
         },
@@ -88,19 +85,6 @@ export default {
                     id: row && row.id
                 }
             });
-        },
-        onDelete(row) {
-            service
-                .delete({ list_id: row.id })
-                .then(res => {
-                    if (res.status === "success") {
-                        this.$message.success("删除成功");
-                        this.fetch();
-                    }
-                })
-                .catch(err => {
-                    this.$message.error(err && err.message);
-                });
         }
     },
     filters: {
@@ -113,15 +97,14 @@ export default {
 </script>
 <style lang='less'>
 .el-table {
-    thead {
-        color: #fff;
-    }
-    th {
-        background: #909399;
-    }
+  thead {
+    color: #fff;
+  }
+  th {
+    background: #909399;
+  }
 }
 .pull-right {
-    float: right;
+  float: right;
 }
 </style>
-

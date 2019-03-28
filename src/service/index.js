@@ -1,6 +1,5 @@
 import service from "./service";
 import serviceUrl from "./config";
-
 const login = params => {
     const sendData = {
         ...serviceUrl.login,

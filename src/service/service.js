@@ -1,21 +1,22 @@
+
 import axios from "axios";
 import { Message } from "element-ui";
-const token = window.localStorage.getItem("token");
 
 const service = option => {
     const originalData = option.data || {};
+    const token = window.localStorage.getItem('token')
     const data = {
         url: option.url,
         method: option.method,
-        body: {},
-        headers: { token: token }
+        body: {}
     };
     data.body = originalData;
     const url = data.url;
 
     let sendData = data.body;
     const req = {
-        method: data.method
+        method: data.method,
+        headers: { "token": token }
     };
     const qs = require("querystring");
     if (data.method.toLowerCase() === "post") {
@@ -34,7 +35,8 @@ const service = option => {
         req.params = sendData;
         req.data = sendData;
         req.headers = {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "token": token
         };
     }
     //console.log(url);
@@ -74,4 +76,4 @@ const service = option => {
         });
 };
 
-export { service as default };
+export default service;
