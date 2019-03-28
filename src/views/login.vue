@@ -41,7 +41,7 @@ export default {
                     login(params)
                         .then(data => {
                             if ((data.status = "success")) {
-                                window.localStorage.setItem('token',res.token)
+                                window.localStorage.setItem('token',data.token)
                                 this.$router.push({
                                     path: "/list"
                                 });

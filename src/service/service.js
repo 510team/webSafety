@@ -4,7 +4,7 @@ import { Message } from "element-ui";
 
 const service = option => {
     const originalData = option.data || {};
-    const token = window.localStorage.getItem('token')
+    const token = window.localStorage.getItem('token') || ''
     const data = {
         url: option.url,
         method: option.method,
@@ -34,10 +34,7 @@ const service = option => {
     } else {
         req.params = sendData;
         req.data = sendData;
-        req.headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "token": token
-        };
+        req.headers["Content-Type"] = "application/x-www-form-urlencoded"
     }
     //console.log(url);
     const startTime = Date.now();
